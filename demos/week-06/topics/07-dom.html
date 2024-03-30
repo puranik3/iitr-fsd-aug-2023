@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Hello DOM</title>
+    </head>
+    <body>
+        <button id="btn-1">Click me 1</button>
+        <button>Click me 2</button>
+        <button>Click me 3</button>
+
+        <script>
+            // pass the id
+            const domBtn1 = document.getElementById("btn-1");
+
+            // use any CSS selector (":nth-child(1)")
+            const domBtn1Another = document.querySelector("#btn-1");
+
+            console.dir(domBtn1);
+            console.dir(domBtn1Another);
+
+            domBtn1Another.addEventListener("click", function (event) {
+                console.log(event);
+                alert("first button is clicked");
+            });
+
+            const btns = document.querySelectorAll("button");
+
+            btns.forEach(function (btn) {
+                btn.addEventListener("click", function (event) {
+                    console.log(event);
+                    alert("a button is clicked");
+                });
+            });
+
+            console.dir(btns);
+            console.log(btns.map);
+
+            const texts = [].map.call(btns, function (btn) {
+                return btn.innerText;
+            });
+
+            console.log(texts);
+        </script>
+    </body>
+</html>

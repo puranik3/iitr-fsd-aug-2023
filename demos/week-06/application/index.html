@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Document</title>
+        <style>
+            body {
+                text-align: center;
+            }
+
+            .grid {
+                display: inline-grid;
+                grid-template-rows: repeat(3, 120px);
+                grid-template-columns: repeat(3, 120px);
+            }
+
+            .grid > div {
+                border: 1px solid black;
+                line-height: 120px;
+                text-align: center;
+            }
+
+            .message {
+                margin: 20px 0;
+            }
+        </style>
+    </head>
+    <body>
+        <div class="game">
+            <div class="grid">
+                <div data-idx="0"></div>
+                <div data-idx="1"></div>
+                <div data-idx="2"></div>
+
+                <div data-idx="3"></div>
+                <div data-idx="4"></div>
+                <div data-idx="5"></div>
+
+                <div data-idx="6"></div>
+                <div data-idx="7"></div>
+                <div data-idx="8"></div>
+            </div>
+            <div class="message">Click the button to start the game</div>
+            <button class="btnStart">Start the game</button>
+        </div>
+
+        <!-- <a href="https://www.google.com">Google</a>
+        <a href="https://www.google.com">Google</a> -->
+
+        <script src="index.js"></script>
+    </body>
+</html>

@@ -1,109 +1,98 @@
-var cells = document.querySelectorAll( '.grid > *' ); // a list of cell DOM nodes
-var messageEl = document.querySelector( '.message' );
-var btnStartEl = document.querySelector( '.btn-start' );
+const cells = document.querySelectorAll('.grid > div');
+const message = document.querySelector('.message');
+const btn = document.querySelector('.btnStart');
 
-// console.log( cells );
-// console.log( messageEl );
-// console.log( btnStartEl );
+let cellValues;
+let nextPlayer;
+let isGameOver;
 
-// game state
-var started = false;
-var nextPlayer = 'X';
-var state = [ 
-    '', '', '',
-    '', '', '',
-    '', '', ''
+const winningStates = [
+    [0, 1, 2],
+    [3, 4, 5],
+    [6, 7, 8],
+
+    [0, 3, 6],
+    [1, 4, 7],
+    [2, 5, 8],
+
+    [0, 4, 8],
+    [2, 4, 6]
 ];
 
-// winning states
-var winningStates = [
-    [ 0, 1, 2 ],
-    [ 3, 4, 5 ],
-    [ 6, 7, 8 ],
-    [ 0, 3, 6 ],
-    [ 1, 4, 7 ],
-    [ 2, 5, 8 ],
-    [ 0, 4, 8 ],
-    [ 2, 4, 6 ]
-];
+function showNextPlayer() {
+    message.innerText = `The next player is ${nextPlayer}`;
+}
+
+function startGame() {
+    cellValues = ['', '', '', '', '', '', '', '', ''];
+    nextPlayer = 'X';
+    isGameOver = false;
+
+    btn.disabled = true;
+    showNextPlayer();
+}
 
 function gameOver() {
-    for( var i = 0; i < winningStates.length; ++i ) {
-        var x = winningStates[i][0];
-        var y = winningStates[i][1];
-        var z = winningStates[i][2];
+    for (let idx = 0; idx < winningStates.length; ++idx) {
+        const winningState = winningStates[idx];
+        const x = winningState[0];
+        const y = winningState[1];
+        const z = winningState[2];
 
-        if( state[x] !== '' && state[x] === state[y] && state[y] === state[z] ) {
-            messageEl.innerText = nextPlayer + ' has won!';
+        console.log(x, y, z);
+
+        if (cellValues[x] !== '' && cellValues[x] === cellValues[y] && cellValues[y] === cellValues[z]) {
             return true;
         }
     }
 
-    for( var i = 0; i < state.length; ++i ) {
-        if( state[i] === '' ) {
-            return false; // game is not over yet
+    // could also be a draw
+    const isDraw = cellValues.every(function (item) {
+        return item !== ''
+    });
+
+    if (isDraw) {
+        return 'draw';
+    }
+
+    return 'not over';
+}
+
+function switchPlayer() {
+    if (nextPlayer === 'X') {
+        nextPlayer = 'O';
+    } else {
+        nextPlayer = 'X';
+    }
+
+    showNextPlayer();
+}
+
+function onCellClick(event) {
+    const cell = event.target;
+
+    if (isGameOver === false) {
+        // alert('Cell was clicked');
+        const idx = cell.getAttribute('data-idx');
+        if (cellValues[idx] !== '') {
+            alert('You cannot click on this cell as it has been taken');
+            return;
         }
+
+        cell.innerText = nextPlayer;
+        cellValues[idx] = nextPlayer;
+
+        if (gameOver()) {
+            alert('Game is over');
+            return;
+        }
+
+        switchPlayer();
     }
-
-    // game is over
-    messageEl.innerText = 'Game over!';
-    return true;
 }
 
-function onCellClick( index ) {
-    if( !started ) {
-        alert( 'Click on start button to start the game' );
-        return;
-    }
+btn.addEventListener('click', startGame);
 
-    if( state[index] !== '' ) {
-        alert( 'That cell is taken' );
-        return;
-    }
-
-    state[index] = nextPlayer;
-    cells[index].innerText = nextPlayer;
-
-    if( gameOver() ) {
-        started = false;
-        return;
-    }
-
-    nextPlayer = ( nextPlayer === 'X' ) ? 'O' : 'X';
-    displayNextPlayer();
-}
-
-function clearBoard() {
-    cells.forEach(function( cell ) {
-        cell.innerText = '';
-    });
-}
-
-function displayNextPlayer() {
-    messageEl.innerText = 'Next turn : ' + nextPlayer;
-}
-
-function startGame() {
-    started = true;
-    nextPlayer = 'X';
-    state = [ 
-        '', '', '',
-        '', '', '',
-        '', '', ''
-    ];
-
-    clearBoard();
-    displayNextPlayer();
-}
-
-
-// setup code to run on cell click
-cells.forEach(function( cell, index ) {
-    cell.addEventListener( 'click', function() {
-        // console.log( index );
-        onCellClick( index )
-    });
+cells.forEach(function (cell) {
+    cell.addEventListener('click', onCellClick);
 });
-
-// setup code to run on start button click
-btnStartEl.addEventListener( 'click', startGame );
