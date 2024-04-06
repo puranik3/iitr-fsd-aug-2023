@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Document</title>
+    </head>
+    <body>
+        <p class="message">
+            <a href="https://google.com">Google</a>
+        </p>
+
+        <script>
+            /**
+             * Using createElement, createTextNode, appendChild
+             */
+            const strongEl = document.createElement("strong");
+            const textEl1 = document.createTextNode("saved");
+            strongEl.appendChild(textEl1);
+
+            console.log(strongEl);
+
+            const messageEl = document.querySelector(".message");
+            const textEl2 = document.createTextNode("Your data has been ");
+            messageEl.appendChild(textEl2);
+            messageEl.appendChild(strongEl);
+        </script>
+    </body>
+</html>

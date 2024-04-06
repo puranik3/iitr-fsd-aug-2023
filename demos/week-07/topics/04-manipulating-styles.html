@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Document</title>
+        <style>
+            .message {
+                padding: 0.5em;
+                border: 1px solid black;
+                border-radius: 5px;
+            }
+
+            .message-success {
+                border: 1px solid green;
+                background-color: olive;
+                color: ivory;
+            }
+
+            .message-error {
+                border: 1px solid crimson;
+                background-color: crimson;
+                color: ivory;
+            }
+        </style>
+    </head>
+    <body>
+        <p class="message">Your email was sent</p>
+
+        <script>
+            const messageEl = document.querySelector(".message");
+
+            /**
+             * Do some inline styling. Add appropriate class.
+             */
+            // messageEl.style.backgroundColor = "crimson";
+            // messageEl.style.color = "white";
+
+            /**
+             * Class-based manipulation
+             */
+            messageEl.classList.add("message");
+            messageEl.classList.add("message-success");
+
+            setTimeout(function () {
+                messageEl.innerText = "Something went wrong!";
+                messageEl.classList.remove("message-success");
+                messageEl.classList.add("message-error");
+            }, 5000);
+        </script>
+    </body>
+</html>

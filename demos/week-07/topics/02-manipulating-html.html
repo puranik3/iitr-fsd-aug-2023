@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Document</title>
+    </head>
+    <body>
+        <p id="message-1">All good!</p>
+        <p id="message-2">All good as well!</p>
+
+        <script>
+            /**
+             * Set innerHTML for #message-1, and innerText for #message-2
+             */
+            const message1El = document.querySelector("#message-1");
+            const message2El = document.querySelector("#message-2");
+
+            // read the HTML within
+            console.log(message1El.innerHTML);
+
+            // Hey browser! Please execute this function, after 2000 ms (2 seconds)
+            // innerHTML string is parsed and necessary HTML elements are created
+            setTimeout(function changeMessage() {
+                // set the HTML within
+                message1El.innerHTML += `<div>
+                        <span>Your data has been <strong>saved</strong>!</span>
+                        <span>Your data has been <strong>saved</strong>!</span>
+                        <span>Your data has been <strong>saved</strong>!</span>
+                        <span>Your data has been <strong>saved</strong>!</span>
+                    </div>`;
+            }, 2000);
+
+            setTimeout(function changeMessage() {
+                // set the HTML within
+                message2El.innerText =
+                    "Your data has been <strong>saved</strong>!";
+            }, 2000);
+        </script>
+    </body>
+</html>

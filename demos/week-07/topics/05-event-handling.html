@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Document</title>
+    </head>
+    <body>
+        <button>Click me</button>
+        <a href="https://www.google.com" id="google-link">Google search page</a>
+        <input type="range" min="1" max="10" value="5" id="rating" />
+        <span id="rating-value"></span>
+
+        <script>
+            /**
+             * Set 'click' handler on button. Check "this", event object
+             * Prevent default action on 'click' of Google search page link if user does not want to navigate.
+             * The 'input' event of inputs using range input. The value property.
+             */
+            // https://developer.mozilla.org/en-US/docs/Web/Events
+            const buttonEl = document.querySelector("button");
+
+            // Hey browser! When the button is "click"ed, call the function
+            buttonEl.addEventListener("click", function () {
+                alert("I was clicked");
+                // window.location.href = "https://www.google.com";
+            });
+            buttonEl.addEventListener("click", function () {
+                alert("I was clicked (2)");
+            });
+            buttonEl.addEventListener("click", function () {
+                alert("I was clicked (3)");
+                // window.location.href = "https://www.google.com";
+            });
+
+            // you can set up at max 1 event handler
+            // buttonEl.onclick = function () {
+            //     alert("I was clicked");
+            //     // window.location.href = "https://www.google.com";
+            // };
+
+            // buttonEl.onclick = function () {
+            //     alert("I was clicked");
+            //     // window.location.href = "https://www.google.com";
+            // };
+
+            const linkEl = document.getElementById("google-link");
+            linkEl.addEventListener("click", function (event) {
+                const choice = confirm("Are you sure you want to proceed");
+                if (choice) {
+                    console.log("Bye!");
+                } else {
+                    // Hey, browser, don't do what you normally do for this event
+                    event.preventDefault();
+                }
+            });
+
+            const inputEl = document.querySelector('input[type="range"]');
+            const ratingValueEl = document.querySelector("#rating-value");
+
+            function setValue() {
+                const value = inputEl.value;
+                ratingValueEl.innerText = value;
+            }
+
+            inputEl.addEventListener("input", setValue);
+            setValue();
+
+            console.log("end of script");
+        </script>
+    </body>
+</html>
