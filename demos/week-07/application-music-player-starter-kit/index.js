@@ -67,11 +67,18 @@ function loadTrack() {
 
   // set up so that the UI is updated every second
   interval_id = setInterval(seekUpdate, 1000);
+  audio_player.addEventListener('ended', nextTrack);
+  random_bg_color();
 }
 
 // Set up a random background color
 function random_bg_color() {
+  let red = Math.floor(Math.random() * (256 - 64)) + 64;
+  let green = Math.floor(Math.random() * (256 - 64)) + 64;
+  let blue = Math.floor(Math.random() * (256 - 64)) + 64;
 
+  let color = `rgb( ${red}, ${green}, ${blue} )`;
+  document.body.style.backgroundColor = color;
 }
 
 // Reset all values to their default
