@@ -8,7 +8,7 @@ export const APPLES = 5;
 
 // level background colors
 export const COLORS = [
-    "#fafafa",
+    "#eaeaea",
     "#ffffcc",
     "#ffe6ee",
     "#e6f2ff",
