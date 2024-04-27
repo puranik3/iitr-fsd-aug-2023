@@ -60,17 +60,21 @@ class Grid {
 
     isApple(cell) {
         // return true/false (or object/null) based on whether cell has an apple (use find())
-        // code...
+        return this.apples.find(
+            apple => apple.x === cell.x && apple.y === cell.y
+        );
     }
 
     eat(cell) {
         // remove apple at cell (use filter(), and reset apples[])
-        // code...
+        this.apples = this.apples.filter(
+            apple => apple.x !== cell.x || apple.y !== cell.y
+        );
     }
 
     isDone() {
         // done if there are no apples
-        // code...
+        return this.apples.length === 0;
     }
 }
 

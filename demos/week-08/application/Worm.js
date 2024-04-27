@@ -121,12 +121,14 @@ class Worm {
 
     isWorm(cell) {
         // return boolean / object based on whether cell is a tail cell (use find())
-        // code...
+        return this.tails.find(
+            tail => tail.x === cell.x && tail.y === cell.y
+        );
     }
 
     grow(qty = 3) {
         // increase size by qty
-        // code...
+        this.size += 3;
     }
 
     setDirection(direction) {

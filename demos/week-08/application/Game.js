@@ -68,66 +68,96 @@ class Game {
     loop = (time) => {
         // console.log('loop');
         // execute only if game is running
-        // set loop to run again before next display refresh
-        requestAnimationFrame(this.loop);
+        if (this.running) {
+            // set loop to run again before next display refresh
+            requestAnimationFrame(this.loop);
 
-        // execute loop logic only if it is time for the next change in display (nextMove)
-        // set up nextMove time
-        // executes once in ~200ms
-        if (time > this.nextMove) {
-            this.nextMove = time + this.configuration.speed;
-            // console.log('update the screen');
+            // execute loop logic only if it is time for the next change in display (nextMove)
+            // set up nextMove time
+            // executes once in ~200ms
+            if (time > this.nextMove) {
+                this.nextMove = time + this.configuration.speed;
+                // console.log('update the screen');
 
-            // move the snake
-            this.worm.move();
+                // move the snake
+                this.worm.move();
 
+                // check game state and switch based on it
+                switch (this.checkState()) {
+                    // -1 -> game is over
+                    case -1:
+                        this.gameOver();
+                        break;
+                    //  1 -> apple eaten -> grow the worm, add score, eat apple, and check if level is complete
+                    case 1:
+                        this.worm.grow();
+                        this.score += 100;
+                        this.grid.eat(this.worm.head);
 
-            // check game state and switch based on it
-            // -1 -> game is over
-            //  1 -> apple eaten -> grow the worm, add score, eat apple, and check if level is complete
-            this.paint();
+                        // is level over?
+                        if (this.grid.isDone()) {
+                            this.levelUp();
+                        }
+                        break;
+                    default:
+                        this.paint();
+                }
+            }
         }
     }
 
     levelUp() {
         // increase score, level
-        // code...
+        this.score += 1000;
+        ++this.configuration.level;
 
         // if not completed last level...
-        // change speed, change color, and seed the grid with apples
-        // code...
-
-        // else end game (win)
-        // code...
+        if (this.configuration.level < MAX_LEVEL) {
+            // change speed, change color, and seed the grid with apples
+            this.configuration.color = COLORS[this.configuration.level];
+            this.configuration.speed -= 7;
+            this.grid.seed();
+        } else {
+            // else end game (win)
+            this.win();
+        }
     }
 
     win() {
         // declare win and stop
-        // code...
+        this.running = false;
+        alert("Bravo! You are a pro at this game!");
     }
 
     gameOver() {
         // declare game over and stop
-        // code...
+        this.running = false;
+        alert("Game over! Better luck next time!");
     }
 
     checkState() {
         // get worm head cell
-        // code...
+        const head = this.worm.head;
 
         // if cell is outside grid, or cell is worm tail cell, return -1 (game over)
-        // code...
+        if (this.isOutside(head) || this.worm.isWorm(head)) {
+            return -1;
+        }
 
         // if cell is an apple, return 1
-        // code...
+        if (this.grid.isApple(head)) {
+            return 1;
+        }
 
         // nothing special happened - return 0
-        // code...
+        return 0;
     }
 
     isOutside(cell) {
         // return true/false based on worm head cell is inside or outside the grid
-        // code...
+        const { nbCellsX, nbCellsY } = this.configuration;
+
+        return cell.x < 0 || cell.x >= nbCellsX || cell.y < 0 || cell.y >= nbCellsY;
     }
 
     paint() {
