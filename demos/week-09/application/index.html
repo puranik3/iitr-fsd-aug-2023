@@ -24,5 +24,15 @@
         </div>
 
         <script src="dist/index.js" type="module"></script>
+
+        <script>
+            fetch("/data/sample.json")
+                .then((response) => {
+                    return response.json();
+                })
+                .then((data) => {
+                    console.log(data);
+                });
+        </script>
     </body>
 </html>
