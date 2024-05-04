@@ -6,7 +6,7 @@
   "scripts": {
     "build": "tsc",
     "build:watch": "tsc --watch",
-    "start": "http-server -c-1 --port 3000",
+    "start": "http-server -c-1 --port 3001",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],
