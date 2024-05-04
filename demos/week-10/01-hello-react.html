@@ -1,0 +1,54 @@
+<!-- ! + Enter -->
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Document</title>
+    </head>
+    <body>
+        <!-- <div id="message">
+            Hello <strong title="Created by Meta">React</strong>
+        </div> -->
+        <div id="root"></div>
+
+        <!-- React DOM uses React -->
+        <!-- React core - defines the "view" (architect) -->
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/react/18.3.1/umd/react.development.js"></script>
+
+        <!-- React DOM (builder) -->
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/react-dom/18.3.1/umd/react-dom.development.min.js"></script>
+
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/babel-standalone/7.24.5/babel.js"></script>
+
+        <script type="text/babel">
+            // Define the UI element ("blueprint")
+            // const el = React.createElement(
+            //     "div",
+            //     {
+            //         // props
+            //         id: "message",
+            //     },
+            //     "Hello ", // children
+            //     React.createElement(
+            //         "strong",
+            //         {
+            //             title: "Created by Meta",
+            //         }, // or {}
+            //         "React"
+            //     )
+            // );
+
+            const el = (
+                <div id="message">
+                    Hello <strong title="Created by Meta">React</strong>
+                </div>
+            );
+
+            console.log(el);
+
+            const root = ReactDOM.createRoot(document.getElementById("root"));
+            root.render(el);
+        </script>
+    </body>
+</html>
