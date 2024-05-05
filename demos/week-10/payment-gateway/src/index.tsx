@@ -1,15 +1,19 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
 
-import App from "./App";
+import App from "./components/App";
 
 const root = ReactDOM.createRoot(
     document.getElementById("root") as HTMLElement
 );
-root.render(
-    <React.StrictMode>
-        <div id="message">
-            Hello <strong title="Created by Meta">React</strong>
-        </div>
-    </React.StrictMode>
-);
+
+// title is a "prop" (attribute)
+// root.render(
+//     <>
+//         <App title="Created by Meta" message="Hello"></App>
+//         <App title="Created by Facebook" message="Namaste"></App>
+//         <App title="Open-sourced" message="Vanakkam"></App>
+//     </>
+// );
+
+root.render(<App />);
