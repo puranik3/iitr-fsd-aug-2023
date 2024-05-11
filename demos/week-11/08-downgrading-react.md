@@ -1,0 +1,2 @@
+- npm uninstall react react-dom
+- npm install react@17 react-dom@17

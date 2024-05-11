@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Higher Order Component (HOC)</title>
+        <link
+            rel="stylesheet"
+            href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.1.3/css/bootstrap.min.css"
+        />
+    </head>
+    <body>
+        <div id="root"></div>
+
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/react/18.2.0/umd/react.development.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/react-dom/18.2.0/umd/react-dom.development.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/babel-standalone/6.26.0/babel.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.27.2/axios.min.js"></script>
+
+        <script type="text/babel">
+            // HOC is a function that generates and returns a "container" wrapper component (wrapper component renders the main "presentation" component)
+            // The presentation component is passed as an argument to the HOC
+            const withCounter = (Component) => {
+                return class extends React.Component {
+                    state = {
+                        value: 0,
+                    };
+
+                    decrement = () => {
+                        this.setState({
+                            value: this.state.value - 1,
+                        });
+                    };
+
+                    increment = () => {
+                        this.setState({
+                            value: this.state.value + 1,
+                        });
+                    };
+
+                    render() {
+                        return (
+                            <Component
+                                value={this.state.value}
+                                decrement={this.decrement}
+                                increment={this.increment}
+                            />
+                        );
+                    }
+                };
+            };
+
+            class Counter extends React.Component {
+                render() {
+                    const { value, decrement, increment } = this.props;
+
+                    return (
+                        <div>
+                            <button onClick={decrement}>-</button>
+                            <span>{value}</span>
+                            <button onClick={increment}>+</button>
+                        </div>
+                    );
+                }
+            }
+
+            class FancyCounter extends React.Component {
+                render() {
+                    const { value, decrement, increment } = this.props;
+
+                    return (
+                        <div className="border border-primary p-3 m-3">
+                            <button
+                                onClick={decrement}
+                                className="btn btn-primary me-2"
+                            >
+                                -
+                            </button>
+                            <span>{value}</span>
+                            <button
+                                onClick={increment}
+                                className="btn btn-primary ms-2"
+                            >
+                                +
+                            </button>
+                        </div>
+                    );
+                }
+            }
+
+            // get the "container" wrapper components
+            const CounterContainer = withCounter(Counter);
+            const FancyCounterContainer = withCounter(FancyCounter);
+
+            const root = ReactDOM.createRoot(document.getElementById("root"));
+            root.render(
+                <React.Fragment>
+                    <CounterContainer />
+                    <FancyCounterContainer />
+                </React.Fragment>
+            );
+        </script>
+    </body>
+</html>
