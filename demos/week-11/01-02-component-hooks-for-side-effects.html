@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Component hooks for side effects</title>
+        <link
+            rel="stylesheet"
+            href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.1.3/css/bootstrap.min.css"
+        />
+    </head>
+    <body>
+        <div id="root"></div>
+
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/react/18.2.0/umd/react.development.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/react-dom/18.2.0/umd/react-dom.development.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/babel-standalone/6.26.0/babel.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.27.2/axios.min.js"></script>
+
+        <script type="text/babel">
+            const getWorkshops = async (_page = 1) => {
+                const response = await axios.get(
+                    `https://workshops-server.onrender.com/workshops`,
+                    {
+                        params: {
+                            // _page: _page
+                            _page,
+                        },
+                    }
+                );
+                return response.data;
+            };
+
+            // Rules of hooks - can be called only in function components, can be called only at the top level of the component - should not be written inside if(), for() etc.
+            const WorkshopsList = () => {
+                const [loading, setLoading] = React.useState(true);
+                const [workshops, setWorkshops] = React.useState([]);
+                const [error, setError] = React.useState(null);
+                const [page, setPage] = React.useState(1);
+
+                const fetchWorkshops = async () => {
+                    // component will re-render
+                    setLoading(true);
+
+                    try {
+                        const workshops = await getWorkshops(page);
+                        console.log(workshops);
+
+                        // component will re-render
+                        setWorkshops(workshops);
+                        setLoading(false);
+                    } catch (error) {
+                        setError(error);
+                        setLoading(false);
+                    }
+                };
+
+                // for every feature you build in the component, add a useEffect()
+                // React.useEffect(
+                //     () => { // say some filtering logic when a filter key changes (some text input)
+
+                //     },
+                //     [filterKey]
+                // );
+
+                React.useEffect(
+                    () => {
+                        // side-effect
+                        fetchWorkshops();
+
+                        // return () => {}; // something similar to cwun
+                    },
+                    // if nothing is passed, the side-effect runs after every render
+                    // empty array -> run the side-effect after the first render ONLY (like cdm)
+                    // if you provide some state/props/context values then the side-effect runs after the first render AND also after the any one of the provided state/props/context values changes (eg. "page" in this case)
+                    [page]
+                );
+
+                const previous = () => {
+                    if (page === 1) {
+                        return;
+                    }
+
+                    setPage((p) => p - 1);
+                };
+
+                const next = () => {
+                    setPage((p) => p + 1);
+                };
+
+                return (
+                    <div className="container my-4">
+                        <h1>List of workshops</h1>
+                        <hr />
+                        <div className="my-3">
+                            <button
+                                className="btn btn-sm btn-primary me-2"
+                                onClick={previous}
+                            >
+                                Previous
+                            </button>
+                            <button
+                                className="btn btn-sm btn-primary me-3"
+                                onClick={next}
+                            >
+                                Next
+                            </button>
+                            You are on page {page}
+                        </div>
+                        {/* Show a list of workshops fetched from the backend */}
+                        {loading && (
+                            <div className="d-flex justify-content-center">
+                                <div className="spinner-border" role="status">
+                                    <span className="visually-hidden">
+                                        Loading...
+                                    </span>
+                                </div>
+                            </div>
+                        )}
+                        {!loading && error && (
+                            <div className="alert alert-danger" role="alert">
+                                {error.message}
+                            </div>
+                        )}
+
+                        {!loading && !error && (
+                            <div className="row">
+                                {workshops.map((workshop) => (
+                                    <div className="col-3 d-flex my-3">
+                                        <div
+                                            className="card w-100"
+                                            key={workshop.id}
+                                        >
+                                            <img
+                                                src={workshop.imageUrl}
+                                                className="card-img-top"
+                                                alt="..."
+                                            />
+                                            <div className="card-body">
+                                                <h5 className="card-title">
+                                                    {workshop.name}
+                                                </h5>
+                                                <div
+                                                    dangerouslySetInnerHTML={{
+                                                        __html: workshop.description,
+                                                    }}
+                                                ></div>
+                                                <a
+                                                    href="#"
+                                                    className="btn btn-primary"
+                                                >
+                                                    Know more
+                                                </a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                ))}
+                            </div>
+                        )}
+                    </div>
+                );
+            };
+
+            const root = ReactDOM.createRoot(document.getElementById("root"));
+            root.render(<WorkshopsList />);
+        </script>
+    </body>
+</html>

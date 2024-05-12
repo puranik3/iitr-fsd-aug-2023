@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Lifting shared state</title>
+        <link
+            rel="stylesheet"
+            href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.1.3/css/bootstrap.min.css"
+        />
+        <style>
+            body {
+                margin: 1em;
+            }
+            .panel {
+                border: 1px solid black;
+                border-radius: 5px;
+            }
+
+            .panel-heading,
+            .panel-body {
+                padding: 0.75em 1em;
+            }
+
+            .panel-heading {
+                background-color: #555;
+                color: #eee;
+            }
+        </style>
+    </head>
+    <body>
+        <div id="root"></div>
+
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/react/18.2.0/umd/react.development.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/react-dom/18.2.0/umd/react-dom.development.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/babel-standalone/6.26.0/babel.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.27.2/axios.min.js"></script>
+
+        <script type="text/babel">
+            // with React.memo() the component will re-render only when it receives a new value for one of its props
+            const PanelHeading = React.memo(({ heading, tg }) => {
+                console.log("PanelHeading");
+
+                return (
+                    <div className="panel-heading" onClick={tg}>
+                        {heading}
+                    </div>
+                );
+            });
+
+            const PanelBody = ({ children, isShown }) => {
+                console.log("PanelBody");
+
+                return isShown ? (
+                    <div className="panel-body">{children}</div>
+                ) : null;
+            };
+
+            // By default when parent renders, children components will render
+            const Panel = (props) => {
+                console.log("Panel");
+
+                // the common ancestor (Panel) stores the shared state and passes it down the children (PanelHeading, PanelBody)
+                const [show, setShow] = React.useState(true);
+
+                // gets recreated every time Panel function runs (Panel renders)
+                // But with useCallback, the function passed is recreated ONLY WHEN the setShow changes (SetShow never changes because React passes the same setter function for the useState call)
+                const toggle = React.useCallback(
+                    () => setShow((s) => !s),
+                    [setShow]
+                );
+
+                return (
+                    <div className="panel">
+                        <PanelHeading heading={props.heading} tg={toggle} />
+                        <PanelBody isShown={show}>{props.children}</PanelBody>
+                    </div>
+                );
+            };
+
+            const root = ReactDOM.createRoot(document.getElementById("root"));
+            root.render(
+                <Panel heading="What is React?">
+                    <p>
+                        It is a UI library to define views for a frontend web
+                        app
+                    </p>
+                    <p>
+                        It is open-sourced and maintained primarily by a team at
+                        Meta
+                    </p>
+                </Panel>
+            );
+        </script>
+    </body>
+</html>

@@ -6,6 +6,7 @@
 -   [Deploying site on GitHub pages - example, a personal frontend project (Hindi)](https://www.youtube.com/watch?v=4eMnz8VbgyM)
 -   You can understand what `useMemo()` hook is with examples in [this documentation page](https://react.dev/reference/react/useMemo)
 -   [TypeScript Tutorial for Beginners - Programming with Mosh](https://www.youtube.com/watch?v=d56mG7DezGs)
+-   [What is a good use-case for React refs?](https://react.dev/learn/manipulating-the-dom-with-refs)
 
 ## Folder structure
 

@@ -38,11 +38,30 @@
         <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.27.2/axios.min.js"></script>
 
         <script type="text/babel">
+            const PanelHeading = ({ heading, tg }) => {
+                return (
+                    <div className="panel-heading" onClick={tg}>
+                        {heading}
+                    </div>
+                );
+            };
+
+            const PanelBody = ({ children, isShown }) => {
+                return isShown ? (
+                    <div className="panel-body">{children}</div>
+                ) : null;
+            };
+
             const Panel = (props) => {
+                // the common ancestor (Panel) stores the shared state and passes it down the children (PanelHeading, PanelBody)
+                const [show, setShow] = React.useState(true);
+
+                const toggle = () => setShow((s) => !s);
+
                 return (
                     <div className="panel">
-                        <div className="panel-heading">{props.heading}</div>
-                        <div className="panel-body">{props.children}</div>
+                        <PanelHeading heading={props.heading} tg={toggle} />
+                        <PanelBody isShown={show}>{props.children}</PanelBody>
                     </div>
                 );
             };
@@ -51,7 +70,7 @@
             root.render(
                 <Panel heading="What is React?">
                     <p>
-                        It is ia UI library to define views for a frontend web
+                        It is a UI library to define views for a frontend web
                         app
                     </p>
                     <p>

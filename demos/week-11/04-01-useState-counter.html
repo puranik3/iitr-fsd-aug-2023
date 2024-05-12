@@ -20,15 +20,31 @@
 
         <script type="text/babel">
             const Counter = () => {
-                const [value, setValue] = React.useState(0);
+                const [counter, setCounter] = React.useState({
+                    value: 0,
+                    // x: 1,
+                    // y: 2
+                });
 
-                const decrement = () => setValue((v) => v - 1);
-                const increment = () => setValue((v) => v + 1);
+                const decrement = () =>
+                    setCounter((state) => {
+                        return {
+                            value: state.value - 1,
+                        };
+                    });
+
+                const increment = () => {
+                    setCounter((state) => {
+                        return {
+                            value: state.value + 1,
+                        };
+                    });
+                };
 
                 return (
                     <div>
                         <button onClick={decrement}>-</button>
-                        {value}
+                        {counter.value}
                         <button onClick={increment}>+</button>
                     </div>
                 );
