@@ -6,6 +6,7 @@ import Navigation from "./components/Navigation/Navigation";
 import HomePage from "./pages/page";
 import LibraryListPage from "./pages/libraries/page";
 import LibraryDetailsPage from "./pages/libraries/[id]/page";
+import AboutPage from "./pages/about/page";
 
 function App() {
     return (
@@ -20,6 +21,7 @@ function App() {
                         path="/libraries/:id"
                         element={<LibraryDetailsPage />}
                     />
+                    <Route path="/about" element={<AboutPage />} />
                 </Routes>
             </Container>
         </div>

@@ -3,6 +3,7 @@ interface IGenre {
     libraryId: number;
     name: string;
     imageUrl: string;
+    description: string;
 }
 
 export default IGenre;
