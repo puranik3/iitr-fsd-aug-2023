@@ -2,7 +2,7 @@ package com.greatlearning.security.spring_boot_security.jwt.resource;
 
 import java.util.Objects;
 
-import jakarta.servlet.http.HttpServletRequest;
+import com.greatlearning.security.spring_boot_security.jwt.JwtTokenUtil;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -11,7 +11,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.DisabledException;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -21,9 +20,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
-// import com.gl.rest.webservices.restfulwebservices.jwt.JwtTokenUtil;
-// import com.gl.rest.webservices.restfulwebservices.jwt.JwtUserDetails;
-
 @RestController
 @CrossOrigin(origins="http://localhost:3000")
 public class JwtAuthenticationRestController {
@@ -31,14 +27,14 @@ public class JwtAuthenticationRestController {
     @Value("${jwt.http.request.header}")
     private String tokenHeader;
 
-    // @Autowired
-    // private AuthenticationManager authenticationManager;
+    @Autowired
+    private AuthenticationManager authenticationManager;
 
-    // @Autowired
-    // private JwtTokenUtil jwtTokenUtil;
+    @Autowired
+    private JwtTokenUtil jwtTokenUtil;
 
-    // @Autowired
-    // private UserDetailsService jwtInMemoryUserDetailsService;
+    @Autowired
+    private UserDetailsService jwtInMemoryUserDetailsService;
 
     @RequestMapping(value = "${jwt.get.token.uri}", method = RequestMethod.POST)
     public ResponseEntity<?> createAuthenticationToken(@RequestBody JwtTokenRequest authenticationRequest)
@@ -48,9 +44,9 @@ public class JwtAuthenticationRestController {
         authenticate(authenticationRequest.getUsername(), authenticationRequest.getPassword());
 
         // Generate a token
-        // final UserDetails userDetails = jwtInMemoryUserDetailsService.loadUserByUsername(authenticationRequest.getUsername());
-        // final String token = jwtTokenUtil.generateToken(userDetails);
-        final String token = "Here is a token for you";
+        final UserDetails userDetails = jwtInMemoryUserDetailsService.loadUserByUsername(authenticationRequest.getUsername());
+        final String token = jwtTokenUtil.generateToken(userDetails);
+        // final String token = "Here is a token for you";
 
         return ResponseEntity.ok(new JwtTokenResponse(token));
     }
