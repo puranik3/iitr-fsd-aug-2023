@@ -939,3 +939,1131 @@ public class JwtWebSecurityConfig {
 -   https://bootify.io/spring-security/rest-api-spring-security-with-jwt.html
 -   https://spring.io/guides/topicals/spring-security-architecture
 -   https://stackoverflow.com/questions/56388865/spring-security-configuration-httpsecurity-vs-websecurity
+
+# Todos App - Getting started with the frontend
+
+## Step 1: Create the React project and start the development server
+
+-   Create the app using create-react-app. In the folder of your choice, run the following in the terminal
+
+```
+npx create-react-app --template typescript spring-boot-security
+```
+
+-   Switch to the folder
+
+```
+cd spring-boot-security
+```
+
+-   Start the app in the terminal
+
+```
+npm start
+```
+
+-   View the app on `http://localhost:3000`
+-   Open another terminal. Keep it free for package installations.
+
+## Step 2: Include React Boostrap
+
+-   Install it
+
+```
+npm i react-bootstrap bootstrap
+```
+
+-   `src/index.tsx` - Include it.
+-   You may remove the imports and code that aren't needed in essence (this is an optional step).
+
+```tsx
+import React from "react";
+import ReactDOM from "react-dom/client";
+
+import App from "./App";
+
+import "bootstrap/dist/css/bootstrap.min.css";
+
+const root = ReactDOM.createRoot(
+    document.getElementById("root") as HTMLElement
+);
+
+root.render(
+    <React.StrictMode>
+        <App />
+    </React.StrictMode>
+);
+```
+
+-   `src/App.tsx`
+
+```tsx
+const App = () => {
+    return <div>App component</div>;
+};
+
+export default App;
+```
+
+-   You may remove `App.css`, `App.test.tsx`, `index.css`, `logo.svg`, `setupTests.ts`, `reportWebVitals.ts`
+
+## Step 3: Set up `components` and `pages` folders, and add the `Navigation` component
+
+-   Create `components` and `pages` folders
+-   Install React router
+
+```
+npm i react-router-dom
+```
+
+-   `src/index.tsx` - Set up React Router for use in the app
+
+```tsx
+import { BrowserRouter } from "react-router-dom";
+```
+
+```tsx
+root.render(
+    <React.StrictMode>
+        <BrowserRouter>
+            <App />
+        </BrowserRouter>
+    </React.StrictMode>
+);
+```
+
+-   `src/components/Navigation/Navigation.tsx`
+
+```tsx
+import { Container, Nav, Navbar } from "react-bootstrap";
+import { NavLink } from "react-router-dom";
+
+const Navigation = () => {
+    return (
+        <Navbar expand="lg" bg="primary" data-bs-theme="dark">
+            <Container>
+                <Navbar.Brand to="/todos" as={NavLink}>
+                    Todos
+                </Navbar.Brand>
+                <Navbar.Toggle aria-controls="basic-navbar-nav" />
+                <Navbar.Collapse id="basic-navbar-nav">
+                    <Nav className="ms-auto">
+                        <Nav.Link as={NavLink} to="/login">
+                            Login
+                        </Nav.Link>
+                        <Nav.Link>Logout</Nav.Link>
+                    </Nav>
+                </Navbar.Collapse>
+            </Container>
+        </Navbar>
+    );
+};
+
+export default Navigation;
+```
+
+-   `src/components/App.tsx`
+
+```tsx
+import { Container } from "react-bootstrap";
+
+import Navigation from "./components/Navigation/Navigation";
+
+const App = () => {
+    return (
+        <>
+            <Navigation />
+
+            <Container className="my-5">
+                Page component shall be displayed here
+            </Container>
+        </>
+    );
+};
+
+export default App;
+```
+
+## Step 4: Login component / page
+
+-   `src/components/Login/Login.tsx`
+
+```tsx
+const Login = () => {
+    return <div>Login</div>;
+};
+
+export default Login;
+```
+
+-   `src/pages/login/page.tsx`
+
+```tsx
+import Login from "../../components/Login/Login";
+
+const LoginPage = () => {
+    return <Login />;
+};
+
+export default LoginPage;
+```
+
+-   `src/App.tsx` - Set up the login route
+
+```tsx
+import { Container } from "react-bootstrap";
+import { Routes, Route } from "react-router-dom";
+
+import Navigation from "./components/Navigation/Navigation";
+import LoginPage from "./pages/login/page";
+
+const App = () => {
+    return (
+        <>
+            <Navigation />
+
+            <Container className="my-5">
+                <Routes>
+                    <Route path="/" element={<LoginPage />} />
+                    <Route path="/login" element={<LoginPage />} />
+                </Routes>
+            </Container>
+        </>
+    );
+};
+
+export default App;
+```
+
+## Step 5: Add the login form
+
+-   `src/components/Login/Login.tsx`
+
+```tsx
+import { Button, Form } from "react-bootstrap";
+
+const Login = () => {
+    return (
+        <>
+            <h1>Login</h1>
+            <hr />
+            <Form>
+                <Form.Group
+                    className="mb-4 col-12 col-sm-8 col-md-6 col-lg-4"
+                    controlId="username"
+                >
+                    <Form.Label>Username</Form.Label>
+                    <Form.Control type="text" placeholder="johndoe" />
+                </Form.Group>
+                <Form.Group
+                    className="mb-4 col-12 col-sm-8 col-md-6 col-lg-4"
+                    controlId="password"
+                >
+                    <Form.Label>Password</Form.Label>
+                    <Form.Control type="password" />
+                </Form.Group>
+                <Button type="submit" variant="primary">
+                    Login
+                </Button>
+            </Form>
+        </>
+    );
+};
+
+export default Login;
+```
+
+-   Add state to make it a controlled component. Set it up for submission.
+
+```tsx
+import { useState, FormEvent } from "react";
+import { Alert, Button, Form } from "react-bootstrap";
+
+const Login = () => {
+    const [username, setUsername] = useState("");
+    const [password, setPassword] = useState("");
+
+    const login = async (event: FormEvent<HTMLFormElement>) => {
+        event.preventDefault();
+
+        try {
+            // Tip: Never log the password. If ever you do, make sure you remove it as soon as you can
+            console.log(username, password);
+
+            setUsername("");
+            setPassword("");
+        } catch (error) {}
+    };
+
+    return (
+        <>
+            <h1>Login</h1>
+            <hr />
+            <Form onSubmit={login}>
+                <Form.Group
+                    className="mb-4 col-12 col-sm-8 col-md-6 col-lg-4"
+                    controlId="username"
+                >
+                    <Form.Label>Username</Form.Label>
+                    <Form.Control
+                        type="text"
+                        placeholder="johndoe"
+                        value={username}
+                        onChange={(event) => setUsername(event.target.value)}
+                    />
+                </Form.Group>
+                <Form.Group
+                    className="mb-4 col-12 col-sm-8 col-md-6 col-lg-4"
+                    controlId="password"
+                >
+                    <Form.Label>Password</Form.Label>
+                    <Form.Control
+                        type="password"
+                        value={password}
+                        onChange={(event) => setPassword(event.target.value)}
+                    />
+                </Form.Group>
+                <Button type="submit" variant="primary">
+                    Login
+                </Button>
+            </Form>
+        </>
+    );
+};
+
+export default Login;
+```
+
+## Step 6: Set up a notifications service. Use it to show error on login.
+
+-   Install UUID to generate unique ids for notifications.
+
+```
+npm install uuid @types/uuid
+```
+
+-   `src/contexts/notifications.tsx`
+
+```tsx
+import { createContext, ReactNode, useContext, useState } from "react";
+import { Toast, ToastContainer } from "react-bootstrap";
+import { v4 as uuidv4 } from "uuid";
+
+type Notification = {
+    id?: string;
+    header: ReactNode;
+    body: ReactNode;
+    variant?:
+        | "primary"
+        | "secondary"
+        | "success"
+        | "danger"
+        | "warning"
+        | "info"
+        | "dark"
+        | "light";
+    autohide?: boolean;
+    delay?: number;
+    show?: boolean;
+    onClose?: () => void;
+};
+
+type NotificationsContextType = {
+    addNotification: (notification: Notification) => void;
+};
+
+const NotificationsContext = createContext<NotificationsContextType>({
+    addNotification: () => {}, // default to noop
+});
+
+const NotificationsProvider = ({ children }: { children: ReactNode }) => {
+    const [notifications, setNotifications] = useState<Notification[]>([]);
+
+    const addNotification = (notification: Notification) => {
+        setNotifications((notifications) => [
+            ...notifications,
+            {
+                id: uuidv4(),
+                show: true,
+                variant: "primary",
+                delay: 5000,
+                ...notification,
+            },
+        ]);
+    };
+
+    const closeNotification = (notification: Notification) => {
+        setNotifications((notifications) =>
+            notifications.map((n) =>
+                n === notification ? { ...n, show: false } : n
+            )
+        );
+    };
+
+    const value = {
+        addNotification,
+    };
+
+    return (
+        <NotificationsContext.Provider value={value}>
+            {children}
+            <div
+                aria-live="polite"
+                aria-atomic="true"
+                className="position-fixed"
+                style={{
+                    minHeight: "320px",
+                    minWidth: "300px",
+                    top: 0,
+                    right: 0,
+                    pointerEvents: "none",
+                }}
+                key="notifications-wrapper"
+            >
+                <ToastContainer
+                    position="top-end"
+                    className="p-3"
+                    style={{ zIndex: 1 }}
+                >
+                    {notifications.map((n) => {
+                        const props = {
+                            bg: n.variant,
+                            show: n.show,
+                            delay: n.delay,
+                            autohide: n.autohide,
+                            onClose: () => {
+                                closeNotification(n);
+                                n.onClose && n.onClose();
+                            },
+                        };
+
+                        return (
+                            <Toast key={n.id} {...props}>
+                                <Toast.Header>{n.header}</Toast.Header>
+                                <Toast.Body>{n.body}</Toast.Body>
+                            </Toast>
+                        );
+                    })}
+                </ToastContainer>
+            </div>
+        </NotificationsContext.Provider>
+    );
+};
+
+const useNotifications = () => useContext(NotificationsContext);
+
+export type { Notification, NotificationsContextType };
+export { NotificationsProvider, useNotifications };
+```
+
+-   `src/App.tsx`
+
+```tsx
+import { NotificationsProvider } from "./contexts/notifications";
+```
+
+```tsx
+const App = () => {
+    return (
+        <NotificationsProvider>{/* rest of code... */}</NotificationsProvider>
+    );
+};
+
+export default App;
+```
+
+-   `src/components/Login/Login.tsx` - Set up error handling
+
+```tsx
+import { useNotifications } from "../../contexts/notifications";
+
+const Login = () => {
+    const [username, setUsername] = useState("");
+    const [password, setPassword] = useState("");
+
+    const { addNotification } = useNotifications();
+
+    const login = async (event: FormEvent<HTMLFormElement>) => {
+        event.preventDefault();
+
+        try {
+            // Tip: Never log the password. If ever you do, make sure you remove it as soon as you can
+            console.log(username, password);
+
+            setUsername("");
+            setPassword("");
+
+            addNotification({
+                variant: "success",
+                autohide: true,
+                header: <strong className="me-auto">Success!</strong>,
+                body: (
+                    <span className="text-light">
+                        Add things to do and track your todos based on their
+                        deadlines.
+                    </span>
+                ),
+            });
+        } catch (error) {
+            addNotification({
+                variant: "danger",
+                autohide: true,
+                header: <strong className="me-auto">Error!</strong>,
+                body: (
+                    <span className="text-light">
+                        {(error as Error).message}
+                    </span>
+                ),
+            });
+        }
+    };
+
+    // rest of code...
+    // ...
+};
+```
+
+-   Alternatively, this complexity can be avoided by using any React notifications (aka toast) library like [`react-toastify`](https://www.npmjs.com/package/react-toastify)
+
+## Step 7: Set up and call a service to make the authentication request, and redirect to a Welcome page on success
+
+-   Install `axios`
+
+```
+npm i axios
+```
+
+-   `.env` - Add the base url for the service and for the API endpoints in particular.
+
+```
+REACT_APP_API_URL=http://localhost:8080
+REACT_APP_JPA_API_URL=http://localhost:8080/jpa
+```
+
+-   `src/services/auth.ts`
+
+```ts
+import axios from "axios";
+
+const baseUrl = process.env.REACT_APP_API_URL;
+
+export const LS_KEY_USERNAME = "username";
+export const LS_KEY_TOKEN = "token";
+
+axios.interceptors.request.use((config) => {
+    if (isUserLoggedIn()) {
+        config.headers.authorization = "Bearer " + getToken();
+    }
+
+    return config;
+});
+
+const login = async (username: string, password: string) => {
+    const response = await axios.post(`${baseUrl}/authenticate`, {
+        username,
+        password,
+    });
+
+    const { token } = response.data;
+
+    localStorage.setItem(LS_KEY_USERNAME, username);
+    localStorage.setItem(LS_KEY_TOKEN, token);
+};
+
+const logout = () => localStorage.removeItem(LS_KEY_USERNAME);
+
+const isUserLoggedIn = () => !!localStorage.getItem(LS_KEY_USERNAME);
+
+const getUsername = () =>
+    isUserLoggedIn() ? localStorage.getItem(LS_KEY_USERNAME) : "";
+
+const getToken = () =>
+    isUserLoggedIn() ? localStorage.getItem(LS_KEY_TOKEN) : "";
+
+export { login, logout, isUserLoggedIn, getUsername, getToken };
+```
+
+-   `src/components/Welcome/Welcome.tsx`
+
+```tsx
+const WelcomeComponent = () => {
+    return (
+        <>
+            <h1>Welcome!</h1>
+            <p>Welcome John Doe. Click here to manage your todos </p>
+        </>
+    );
+};
+
+export default WelcomeComponent;
+```
+
+-   `src/pages/welcome/page.tsx`
+
+```tsx
+import Welcome from "../../components/Welcome/Welcome";
+
+const WelcomePage = () => {
+    return <Welcome />;
+};
+
+export default WelcomePage;
+```
+
+-   `src/App.tsx` - Add a route to show the Welcome page
+
+```tsx
+import WelcomePage from "./pages/welcome/page";
+```
+
+```tsx
+<Routes>
+    <Route path="/" element={<LoginPage />} />
+    <Route path="/login" element={<LoginPage />} />
+    <Route path="/welcome/:username" element={<WelcomePage />} />
+</Routes>
+```
+
+-   `src/components/Login/Login.tsx`
+
+```tsx
+import { useNavigate } from "react-router-dom";
+import { login as LoginService } from "../../services/auth";
+```
+
+```tsx
+const Login = () => {
+    // rest of code...
+
+    const navigate = useNavigate();
+
+    const login = async (event: FormEvent<HTMLFormElement>) => {
+        event.preventDefault();
+
+        try {
+            await LoginService(username, password);
+
+            navigate(`/welcome/${username}`);
+
+            setUsername("");
+            setPassword("");
+
+            addNotification({
+                variant: "success",
+                autohide: true,
+                header: <strong className="me-auto">Success!</strong>,
+                body: (
+                    <span className="text-light">
+                        Add things to do and track your todos based on their
+                        deadlines.
+                    </span>
+                ),
+            });
+        } catch (error) {
+            // rest of code...
+        }
+    };
+
+    // rest of code...
+};
+
+// rest of code...
+```
+
+-   **IMPORTANT**: Make sure to restart the dev server - the changes in `.env` file are read only at startup time.
+
+## Step 8: Show the username, and set up link to navigate to TodosList page
+
+-   `src/components/Welcome/Welcome.tsx`
+
+```tsx
+import { Link, useParams } from "react-router-dom";
+
+type Params = {
+    username: string | undefined;
+};
+
+const WelcomeComponent = () => {
+    const { username } = useParams<Params>();
+
+    return (
+        <>
+            <h1>Welcome!</h1>
+            <p>
+                Welcome {username}. Click <Link to="/todos">here</Link> to
+                manage your todos
+            </p>
+        </>
+    );
+};
+
+export default WelcomeComponent;
+```
+
+-   `src/components/todos/TodosList/TodosList.tsx`
+
+```tsx
+const TodosList = () => {
+    return (
+        <>
+            <h1>Todos</h1>
+            <hr />
+        </>
+    );
+};
+
+export default TodosList;
+```
+
+-   `src/pages/todos/page.tsx`
+
+```tsx
+import TodosList from "../../components/todos/TodosList/TodosList";
+
+const TodosListPage = () => {
+    return <TodosList />;
+};
+
+export default TodosListPage;
+```
+
+-   `src/App.tsx`
+
+```tsx
+import TodosListPage from "./pages/todos/page";
+```
+
+```tsx
+<Routes>
+    <Route path="/" element={<LoginPage />} />
+    <Route path="/login" element={<LoginPage />} />
+    <Route path="/welcome/:username" element={<WelcomePage />} />
+    <Route path="/todos" element={<TodosListPage />} />
+</Routes>
+```
+
+## Step 9: Fetch the todos and show them
+
+-   `src/types/utils/ts` - Add utility types like `NS` here
+
+```ts
+export type NS = number | string;
+```
+
+-   `src/services/todos.ts`
+
+```ts
+import axios from "axios";
+import { getUsername } from "./auth";
+import { NS } from "../types/utils";
+
+type Todo = {
+    id?: number;
+    username: string;
+    description: string;
+    targetDate: string;
+};
+
+const jpaBaseUrl = process.env.REACT_APP_JPA_API_URL;
+
+const getTodosBaseUrl = () => `${jpaBaseUrl}/users/${getUsername()}/todos`;
+
+const getTodos = async () => {
+    const response = await axios.get<Todo[]>(getTodosBaseUrl());
+    return response.data;
+};
+
+const getTodoById = async (id: NS) => {
+    const response = await axios.get<Todo>(`${getTodosBaseUrl()}/${id}`);
+    return response.data;
+};
+
+const postTodo = async (todo: Todo) => {
+    const response = await axios.post<Todo>(getTodosBaseUrl(), todo);
+    return response.data;
+};
+
+const putTodo = async (id: NS, todo: Todo) => {
+    const response = await axios.put(`${getTodosBaseUrl()}/${id}`, todo);
+    return response.data;
+};
+
+const deleteTodo = async (id: NS) => {
+    await axios.delete(`${getTodosBaseUrl()}/${id}`);
+};
+
+export type { Todo };
+export { getTodos, getTodoById, postTodo, putTodo, deleteTodo };
+```
+
+-   Install moment (we use it to format dates). You may also use an alternative library like date-fns.
+
+```
+npm i moment
+```
+
+-   `src/components/todos/TodosList/TodosList.tsx`
+
+```tsx
+import { useState, useEffect } from "react";
+import { Button, Spinner, Table } from "react-bootstrap";
+import moment from "moment";
+
+import { useNotifications } from "../../../contexts/notifications";
+import { Todo, getTodos } from "../../../services/todos";
+import { NS } from "../../../types/utils";
+
+const TodosList = () => {
+    const [todos, setTodos] = useState<Todo[]>([]);
+    const [loading, setLoading] = useState(true);
+
+    const { addNotification } = useNotifications();
+
+    const refreshTodos = async () => {
+        try {
+            const todos = await getTodos();
+            setTodos(todos);
+        } catch (error) {
+            addNotification({
+                variant: "danger",
+                autohide: true,
+                header: <strong className="me-auto">Error!</strong>,
+                body: (
+                    <span className="text-light">
+                        {(error as Error).message}
+                    </span>
+                ),
+            });
+        } finally {
+            setLoading(false);
+        }
+    };
+
+    useEffect(() => {
+        refreshTodos();
+    }, []);
+
+    return (
+        <>
+            <h1 className="d-flex justify-content-between align-items-center">
+                Todos
+                <Button variant="primary">Add</Button>
+            </h1>
+            <hr />
+            {loading && (
+                <div className="text-center my-5">
+                    <Spinner />
+                </div>
+            )}
+            <Table striped bordered hover>
+                <thead>
+                    <tr>
+                        <th>Description</th>
+                        <th>Target Date</th>
+                        <th>Update</th>
+                        <th>Delete</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {todos.map((todo) => (
+                        <tr key={todo.id}>
+                            <td>{todo.description}</td>
+                            <td>
+                                {moment(todo.targetDate).format("YYYY-MM-DD")}
+                            </td>
+                            <td>
+                                <Button variant="primary">Update</Button>
+                            </td>
+                            <td>
+                                <Button variant="warning">Delete</Button>
+                            </td>
+                        </tr>
+                    ))}
+                </tbody>
+            </Table>
+        </>
+    );
+};
+
+export default TodosList;
+```
+
+## Step 10: Delete todo feature
+
+-   `src/components/TodosList/TodosList.tsx`
+-   Import the deleteTodod service
+
+```tsx
+import { Todo, getTodos, deleteTodo } from "../../../services/todos";
+```
+
+-   Add this method within the component function
+
+```tsx
+const deleteTodoClicked = async (id: NS) => {
+    if (!window.confirm("Are you sure you want to proceed?")) {
+        return;
+    }
+
+    try {
+        await deleteTodo(id);
+
+        addNotification({
+            variant: "success",
+            autohide: true,
+            header: <strong className="me-auto">Success!</strong>,
+            body: (
+                <span className="text-light">
+                    Successfully deleted the todo
+                </span>
+            ),
+        });
+
+        refreshTodos();
+    } catch (error) {
+        addNotification({
+            variant: "danger",
+            autohide: true,
+            header: <strong className="me-auto">Error!</strong>,
+            body: (
+                <span className="text-light">{(error as Error).message}</span>
+            ),
+        });
+    }
+};
+```
+
+-   Call this method on click of the Delete button for a todo.
+
+```tsx
+<Button variant="warning" onClick={() => deleteTodoClicked(todo.id as NS)}>
+    Delete
+</Button>
+```
+
+## Step 11: Set up the Add / Edit todo page
+
+-   `src/components/todos/TodoAddEdit/TodoAddEdit.tsx`
+
+```tsx
+const TodoAddEdit = () => {
+    return (
+        <>
+            <h1>Add / Edit a Todo</h1>
+            <hr />
+        </>
+    );
+};
+
+export default TodoAddEdit;
+```
+
+-   `src/pages/todos/[id]/page.tsx`
+
+```tsx
+import TodoAddEdit from "../../../components/todos/TodoAddEdit/TodoAddEdit";
+
+const TodoAddEditPage = () => {
+    return <TodoAddEdit />;
+};
+
+export default TodoAddEditPage;
+```
+
+-   `src/components/todos/TodosList/TodosList.tsx`
+
+-   Add the necessary import
+
+```tsx
+import { useNavigate } from "react-router-dom";
+```
+
+-   Add the call to the hook, and the following methods in the component function, and set up the methods as button click event handlers
+
+```tsx
+const navigate = useNavigate();
+
+const addTodoClicked = () => {
+    navigate(`/todos/-1`);
+};
+
+const updateTodoClicked = (id: NS) => {
+    navigate(`/todos/${id}`);
+};
+```
+
+```tsx
+<h1 className="d-flex justify-content-between align-items-center">
+    Todos
+    <Button variant="primary" onClick={addTodoClicked}>
+        Add
+    </Button>
+</h1>
+```
+
+```tsx
+<Button variant="primary" onClick={() => updateTodoClicked(todo.id as NS)}>
+    Update
+</Button>
+```
+
+-   `src/App.tsx`
+-   Add the necessary import
+
+```tsx
+import TodoAddEditPage from "./pages/todos/[id]/page";
+```
+
+-   Add the new Route
+
+```tsx
+<Routes>
+    <Route path="/" element={<LoginPage />} />
+    <Route path="/login" element={<LoginPage />} />
+    <Route path="/welcome/:username" element={<WelcomePage />} />
+    <Route path="/todos" element={<TodosListPage />} />
+    <Route path="/todos/:id" element={<TodoAddEditPage />} />
+</Routes>
+```
+
+## Step 12: Add the Add / Edit todo feature (with form validation using Formik)
+
+-   Install Formik for form validations. An alternative is react-hook-form
+
+```
+npm i formik
+```
+
+-   `src/components/todos/TodoAddEdit/TodoAddEdit.tsx`
+
+```tsx
+import { useState, useEffect } from "react";
+import { useParams, useNavigate } from "react-router-dom";
+import { Button } from "react-bootstrap";
+import { Formik, Form, Field, ErrorMessage } from "formik";
+import moment from "moment";
+
+import { Todo, getTodoById, postTodo, putTodo } from "../../../services/todos";
+import { getUsername } from "../../../services/auth";
+
+type Params = {
+    id: string | undefined;
+};
+
+const TodoComponent = () => {
+    const { id } = useParams<Params>();
+    const navigate = useNavigate();
+
+    const [description, setDescription] = useState("");
+    const [targetDate, setTargetDate] = useState(() =>
+        moment(new Date()).format("YYYY-MM-DD")
+    );
+
+    useEffect(() => {
+        if (id === "-1") {
+            return;
+        }
+
+        const helper = async () => {
+            const data = await getTodoById(id as string);
+
+            setDescription(data.description);
+            setTargetDate(moment(data.targetDate).format("YYYY-MM-DD"));
+        };
+
+        helper();
+    }, []);
+
+    const validate = (values: Omit<Todo, "id" | "username">) => {
+        let errors = {} as Todo;
+
+        if (!values.description) {
+            errors.description = "Enter a Description";
+        } else if (values.description.length < 5) {
+            errors.description = "Enter atleast 5 Characters in Description";
+        }
+
+        if (!moment(values.targetDate).isValid()) {
+            errors.targetDate = "Enter a valid Target Date";
+        }
+
+        return errors;
+    };
+
+    const onSubmit = async (values: Omit<Todo, "id" | "username">) => {
+        const todo = {
+            id: id,
+            username: getUsername(),
+            description: values.description,
+            targetDate: values.targetDate,
+        } as Todo;
+
+        if (id === "-1") {
+            await postTodo(todo);
+        } else {
+            await putTodo(id as string, todo);
+        }
+
+        navigate("/todos");
+    };
+
+    return (
+        <>
+            <h1>Add / Edit a Todo</h1>
+            <hr />
+            <Formik
+                initialValues={{ description, targetDate }}
+                onSubmit={onSubmit}
+                validateOnChange={true}
+                validateOnBlur={true}
+                validate={validate}
+                enableReinitialize={true}
+            >
+                {() => (
+                    <Form noValidate>
+                        <ErrorMessage
+                            name="description"
+                            component="div"
+                            className="alert alert-warning"
+                        />
+                        <ErrorMessage
+                            name="targetDate"
+                            component="div"
+                            className="alert alert-warning"
+                        />
+                        <fieldset className="form-group mb-3">
+                            <label>Description</label>
+                            <Field
+                                className="form-control"
+                                type="text"
+                                name="description"
+                            />
+                        </fieldset>
+                        <fieldset className="form-group mb-3">
+                            <label>Target Date</label>
+                            <Field
+                                className="form-control"
+                                type="date"
+                                name="targetDate"
+                            />
+                        </fieldset>
+                        <Button variant="primary" type="submit">
+                            Save
+                        </Button>
+                    </Form>
+                )}
+            </Formik>
+        </>
+    );
+};
+
+export default TodoComponent;
+```
+
+## Step 13: Add logout functionality and update the Navigation component
+
+-   `src/components/Navigation/Navigation.tsx`
+
+```tsx
+
+```
