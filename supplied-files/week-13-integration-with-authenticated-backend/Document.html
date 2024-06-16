@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<!-- saved from url=(0120)file:///Users/puranik/Documents/training/general/react/kh-react-jun-2024/demos/01-react/07-component-event-handling.html -->
+<html lang="en"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Document</title>
+        <link rel="stylesheet" href="./Document_files/all.min.css">
+        <style>
+            .mr-sm {
+                margin-right: 8px;
+            }
+
+            .ml-sm {
+                margin-left: 8px;
+            }
+
+            .fa-solid {
+                /* font-weight: bold; */
+            }
+
+            .button {
+                padding: 8px;
+                border-width: 0;
+                border-style: solid;
+                border-radius: 3px;
+            }
+        </style>
+    <script>"use strict";
+
+var handleDblClick = function handleDblClick() {
+  alert("Double click");
+};
+var Button = function Button(_ref) {
+  var title = _ref.title,
+    icon = _ref.icon,
+    _ref$bgColor = _ref.bgColor,
+    bgColor = _ref$bgColor === void 0 ? "#eee" : _ref$bgColor,
+    _ref$textColor = _ref.textColor,
+    textColor = _ref$textColor === void 0 ? "black" : _ref$textColor,
+    _ref$onClick = _ref.onClick,
+    onClick = _ref$onClick === void 0 ? function () {
+      console.log("I was clicked (Default handler executed)");
+    } : _ref$onClick;
+  return /*#__PURE__*/React.createElement("button", {
+    className: "button",
+    style: {
+      backgroundColor: bgColor,
+      color: textColor
+    },
+    onClick: onClick,
+    onDblClick: handleDblClick
+  }, icon !== undefined && /*#__PURE__*/React.createElement("i", {
+    className: icon + " mr-sm"
+  }), /*#__PURE__*/React.createElement("span", null, title));
+};
+var root = ReactDOM.createRoot(document.getElementById("root"));
+root.render( /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement(Button, {
+  title: "Add file"
+}), /*#__PURE__*/React.createElement(Button, {
+  onClick: function onClick() {
+    alert("I was clicked");
+  },
+  title: "Code",
+  icon: "fa-solid fa-code",
+  bgColor: "green",
+  textColor: "white"
+})));
+//# sourceMappingURL=data:application/json;charset=utf-8;base64,eyJ2ZXJzaW9uIjozLCJuYW1lcyI6WyJoYW5kbGVEYmxDbGljayIsImFsZXJ0IiwiQnV0dG9uIiwiX3JlZiIsInRpdGxlIiwiaWNvbiIsIl9yZWYkYmdDb2xvciIsImJnQ29sb3IiLCJfcmVmJHRleHRDb2xvciIsInRleHRDb2xvciIsIl9yZWYkb25DbGljayIsIm9uQ2xpY2siLCJjb25zb2xlIiwibG9nIiwiUmVhY3QiLCJjcmVhdGVFbGVtZW50IiwiY2xhc3NOYW1lIiwic3R5bGUiLCJiYWNrZ3JvdW5kQ29sb3IiLCJjb2xvciIsIm9uRGJsQ2xpY2siLCJ1bmRlZmluZWQiLCJyb290IiwiUmVhY3RET00iLCJjcmVhdGVSb290IiwiZG9jdW1lbnQiLCJnZXRFbGVtZW50QnlJZCIsInJlbmRlciJdLCJzb3VyY2VzIjpbIklubGluZSBCYWJlbCBzY3JpcHQiXSwic291cmNlc0NvbnRlbnQiOlsiXG4gICAgICAgICAgICBjb25zdCBoYW5kbGVEYmxDbGljayA9ICgpID0+IHtcbiAgICAgICAgICAgICAgICBhbGVydChcIkRvdWJsZSBjbGlja1wiKTtcbiAgICAgICAgICAgIH07XG5cbiAgICAgICAgICAgIGNvbnN0IEJ1dHRvbiA9ICh7XG4gICAgICAgICAgICAgICAgdGl0bGUsXG4gICAgICAgICAgICAgICAgaWNvbixcbiAgICAgICAgICAgICAgICBiZ0NvbG9yID0gXCIjZWVlXCIsIC8vIHJlY29tbWVuZGVkIHdheSBmb3IgZGVmYXVsdHNcbiAgICAgICAgICAgICAgICB0ZXh0Q29sb3IgPSBcImJsYWNrXCIsXG4gICAgICAgICAgICAgICAgb25DbGljayA9ICgpID0+IHtcbiAgICAgICAgICAgICAgICAgICAgY29uc29sZS5sb2coXCJJIHdhcyBjbGlja2VkIChEZWZhdWx0IGhhbmRsZXIgZXhlY3V0ZWQpXCIpO1xuICAgICAgICAgICAgICAgIH0sXG4gICAgICAgICAgICB9KSA9PiB7XG4gICAgICAgICAgICAgICAgcmV0dXJuIChcbiAgICAgICAgICAgICAgICAgICAgPGJ1dHRvblxuICAgICAgICAgICAgICAgICAgICAgICAgY2xhc3NOYW1lPVwiYnV0dG9uXCJcbiAgICAgICAgICAgICAgICAgICAgICAgIHN0eWxlPXt7XG4gICAgICAgICAgICAgICAgICAgICAgICAgICAgYmFja2dyb3VuZENvbG9yOiBiZ0NvbG9yLFxuICAgICAgICAgICAgICAgICAgICAgICAgICAgIGNvbG9yOiB0ZXh0Q29sb3IsXG4gICAgICAgICAgICAgICAgICAgICAgICB9fVxuICAgICAgICAgICAgICAgICAgICAgICAgb25DbGljaz17b25DbGlja31cbiAgICAgICAgICAgICAgICAgICAgICAgIG9uRGJsQ2xpY2s9e2hhbmRsZURibENsaWNrfVxuICAgICAgICAgICAgICAgICAgICA+XG4gICAgICAgICAgICAgICAgICAgICAgICB7aWNvbiAhPT0gdW5kZWZpbmVkICYmIChcbiAgICAgICAgICAgICAgICAgICAgICAgICAgICA8aSBjbGFzc05hbWU9e2ljb24gKyBcIiBtci1zbVwifT48L2k+XG4gICAgICAgICAgICAgICAgICAgICAgICApfVxuICAgICAgICAgICAgICAgICAgICAgICAgPHNwYW4+e3RpdGxlfTwvc3Bhbj5cbiAgICAgICAgICAgICAgICAgICAgPC9idXR0b24+XG4gICAgICAgICAgICAgICAgKTtcbiAgICAgICAgICAgIH07XG5cbiAgICAgICAgICAgIGNvbnN0IHJvb3QgPSBSZWFjdERPTS5jcmVhdGVSb290KGRvY3VtZW50LmdldEVsZW1lbnRCeUlkKFwicm9vdFwiKSk7XG4gICAgICAgICAgICByb290LnJlbmRlcihcbiAgICAgICAgICAgICAgICA8ZGl2PlxuICAgICAgICAgICAgICAgICAgICA8QnV0dG9uIHRpdGxlPVwiQWRkIGZpbGVcIiAvPlxuICAgICAgICAgICAgICAgICAgICA8QnV0dG9uXG4gICAgICAgICAgICAgICAgICAgICAgICBvbkNsaWNrPXsoKSA9PiB7XG4gICAgICAgICAgICAgICAgICAgICAgICAgICAgYWxlcnQoXCJJIHdhcyBjbGlja2VkXCIpO1xuICAgICAgICAgICAgICAgICAgICAgICAgfX1cbiAgICAgICAgICAgICAgICAgICAgICAgIHRpdGxlPVwiQ29kZVwiXG4gICAgICAgICAgICAgICAgICAgICAgICBpY29uPVwiZmEtc29saWQgZmEtY29kZVwiXG4gICAgICAgICAgICAgICAgICAgICAgICBiZ0NvbG9yPVwiZ3JlZW5cIlxuICAgICAgICAgICAgICAgICAgICAgICAgdGV4dENvbG9yPVwid2hpdGVcIlxuICAgICAgICAgICAgICAgICAgICAvPlxuICAgICAgICAgICAgICAgIDwvZGl2PlxuICAgICAgICAgICAgKTtcbiAgICAgICAgIl0sIm1hcHBpbmdzIjoiOztBQUNZLElBQU1BLGNBQWMsR0FBRyxTQUFqQkEsY0FBY0EsQ0FBQSxFQUFTO0VBQ3pCQyxLQUFLLENBQUMsY0FBYyxDQUFDO0FBQ3pCLENBQUM7QUFFRCxJQUFNQyxNQUFNLEdBQUcsU0FBVEEsTUFBTUEsQ0FBQUMsSUFBQSxFQVFOO0VBQUEsSUFQRkMsS0FBSyxHQUFBRCxJQUFBLENBQUxDLEtBQUs7SUFDTEMsSUFBSSxHQUFBRixJQUFBLENBQUpFLElBQUk7SUFBQUMsWUFBQSxHQUFBSCxJQUFBLENBQ0pJLE9BQU87SUFBUEEsT0FBTyxHQUFBRCxZQUFBLGNBQUcsTUFBTSxHQUFBQSxZQUFBO0lBQUFFLGNBQUEsR0FBQUwsSUFBQSxDQUNoQk0sU0FBUztJQUFUQSxTQUFTLEdBQUFELGNBQUEsY0FBRyxPQUFPLEdBQUFBLGNBQUE7SUFBQUUsWUFBQSxHQUFBUCxJQUFBLENBQ25CUSxPQUFPO0lBQVBBLE9BQU8sR0FBQUQsWUFBQSxjQUFHLFlBQU07TUFDWkUsT0FBTyxDQUFDQyxHQUFHLENBQUMsMENBQTBDLENBQUM7SUFDM0QsQ0FBQyxHQUFBSCxZQUFBO0VBRUQsb0JBQ0lJLEtBQUEsQ0FBQUMsYUFBQTtJQUNJQyxTQUFTLEVBQUMsUUFBUTtJQUNsQkMsS0FBSyxFQUFFO01BQ0hDLGVBQWUsRUFBRVgsT0FBTztNQUN4QlksS0FBSyxFQUFFVjtJQUNYLENBQUU7SUFDRkUsT0FBTyxFQUFFQSxPQUFRO0lBQ2pCUyxVQUFVLEVBQUVwQjtFQUFlLEdBRTFCSyxJQUFJLEtBQUtnQixTQUFTLGlCQUNmUCxLQUFBLENBQUFDLGFBQUE7SUFBR0MsU0FBUyxFQUFFWCxJQUFJLEdBQUc7RUFBUyxDQUFJLENBQ3JDLGVBQ0RTLEtBQUEsQ0FBQUMsYUFBQSxlQUFPWCxLQUFZLENBQ2YsQ0FBQztBQUVqQixDQUFDO0FBRUQsSUFBTWtCLElBQUksR0FBR0MsUUFBUSxDQUFDQyxVQUFVLENBQUNDLFFBQVEsQ0FBQ0MsY0FBYyxDQUFDLE1BQU0sQ0FBQyxDQUFDO0FBQ2pFSixJQUFJLENBQUNLLE1BQU0sZUFDUGIsS0FBQSxDQUFBQyxhQUFBLDJCQUNJRCxLQUFBLENBQUFDLGFBQUEsQ0FBQ2IsTUFBTTtFQUFDRSxLQUFLLEVBQUM7QUFBVSxDQUFFLENBQUMsZUFDM0JVLEtBQUEsQ0FBQUMsYUFBQSxDQUFDYixNQUFNO0VBQ0hTLE9BQU8sRUFBRSxTQUFBQSxRQUFBLEVBQU07SUFDWFYsS0FBSyxDQUFDLGVBQWUsQ0FBQztFQUMxQixDQUFFO0VBQ0ZHLEtBQUssRUFBQyxNQUFNO0VBQ1pDLElBQUksRUFBQyxrQkFBa0I7RUFDdkJFLE9BQU8sRUFBQyxPQUFPO0VBQ2ZFLFNBQVMsRUFBQztBQUFPLENBQ3BCLENBQ0EsQ0FDVCxDQUFDIiwiaWdub3JlTGlzdCI6W119</script></head>
+    <body>
+        <div id="root"><div><button class="button" style="background-color: rgb(238, 238, 238); color: black;"><span>Add file</span></button><button class="button" style="background-color: green; color: white;"><i class="fa-solid fa-code mr-sm"></i><span>Code</span></button></div></div>
+
+        <!-- React - architect (blueprint = React element) -->
+        <script src="./Document_files/react.development.js"></script>
+
+        <!-- ReactDOM - builder (converts React element -> DOM) -->
+        <script src="./Document_files/react-dom.development.min.js"></script>
+
+        <!-- Compiler for JS + JSX -->
+        <script src="./Document_files/babel.js"></script>
+
+        <script type="text/babel">
+            const handleDblClick = () => {
+                alert("Double click");
+            };
+
+            const Button = ({
+                title,
+                icon,
+                bgColor = "#eee", // recommended way for defaults
+                textColor = "black",
+                onClick = () => {
+                    console.log("I was clicked (Default handler executed)");
+                },
+            }) => {
+                return (
+                    <button
+                        className="button"
+                        style={{
+                            backgroundColor: bgColor,
+                            color: textColor,
+                        }}
+                        onClick={onClick}
+                        onDblClick={handleDblClick}
+                    >
+                        {icon !== undefined && (
+                            <i className={icon + " mr-sm"}></i>
+                        )}
+                        <span>{title}</span>
+                    </button>
+                );
+            };
+
+            const root = ReactDOM.createRoot(document.getElementById("root"));
+            root.render(
+                <div>
+                    <Button title="Add file" />
+                    <Button
+                        onClick={() => {
+                            alert("I was clicked");
+                        }}
+                        title="Code"
+                        icon="fa-solid fa-code"
+                        bgColor="green"
+                        textColor="white"
+                    />
+                </div>
+            );
+        </script>
+    
+
+</body></html>
